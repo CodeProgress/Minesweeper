@@ -39,20 +39,20 @@ class Game(object):
         self.print_instructions()
         while True:
             self.play_round()
-            play_again = raw_input("\n==>Would you like to play again? y/n: ").strip()
+            play_again = input("\n==>Would you like to play again? y/n: ").strip()
             if play_again != "y":
                 break
             self.reset_for_next_round()
-        print "See you next time!"
+        print("Thanks for playing! See you next time!")
 
     def play_round(self):
         while not self.is_game_over():
-            print self.board
+            print(self.board)
             move = self.get_row_col_from_user()
             self.update_board(move)
 
         self.board.uncover_all_cells()
-        print self.board
+        print(self.board)
         self.print_outcome()
 
     def reset_for_next_round(self):
@@ -67,10 +67,10 @@ class Game(object):
         return self.turn_input_validator.get_validated_row_col(input_message, error_message)
 
     def get_size_of_grid_from_user(self):
-        print "First, let's set up the square NxN playing grid."
-        print "What size would you like to choose for N?"
+        print("First, let's set up the square NxN playing grid.\n")
+        print("What size would you like to choose for N?")
 
-        input_message = "\n==>Enter an integer between 0 and {}: ".format(self.max_side_length_of_grid)
+        input_message = "==>Enter an integer between 0 and {}: ".format(self.max_side_length_of_grid)
         error_message = "\nInvalid response.  {}" \
                         + "\nExample: '4' (without quotes)" \
                         + "\nThis would create a 4x4 grid" \
@@ -112,7 +112,7 @@ class Game(object):
             output += self.ascii_art.winner
         else:
             output += "Unfortunately that was a mine :/ \nBetter luck next time!"
-        print output + "\nThanks for playing :)"
+        print(output + "\nThanks for playing :)")
 
     def print_instructions(self):
         header = self.ascii_art.header
@@ -122,11 +122,11 @@ class Game(object):
                        + "\n--Row numbers are displayed vertically along the left side." \
                        + "\n--Column numbers are displayed horizontally along the top." \
                        + "\n(Enter q at any time to quit)\n"
-        print header + instructions
+        print(header + instructions)
 
     def print_title_screen(self):
-        print self.ascii_art.minesweeper_title
-        print "Welcome to Minesweeper!"
+        print(self.ascii_art.minesweeper_title)
+        print("Welcome to Minesweeper!\n")
 
 
 class Board(object):
@@ -166,8 +166,8 @@ class Board(object):
 
     def create_random_mine_locations(self):
         possible_mine_locations = itertools.product(
-            xrange(self.side_length_of_square_grid),
-            xrange(self.side_length_of_square_grid))
+            range(self.side_length_of_square_grid),
+            range(self.side_length_of_square_grid))
         return set(random.sample(list(possible_mine_locations), self.num_mines))
 
     def is_cell_on_board(self, row, col):
@@ -326,12 +326,12 @@ class UserInputValidator(object):
     def get_data_from_user(input_message, error_message, validation_function, extra_vf_args=()):
         while True:
             try:
-                user_input = raw_input(input_message).strip()
+                user_input = input(input_message).strip()
                 return validation_function(user_input, *extra_vf_args)
             except GameTerminated:
                 sys.exit()
-            except (ValueError, TypeError), e:
-                print error_message.format(e)
+            except (ValueError, TypeError) as e:
+                print(error_message.format(e))
 
     @staticmethod
     def validate_num_arguments(args_list, expected_num_arguments):
@@ -351,6 +351,7 @@ class UserInputValidator(object):
 
     def is_game_terminated(self, user_input):
         if user_input == self.termination_str:
+            print("Thanks for playing! See you next time!")
             raise GameTerminated("Game Terminated")
 
     @staticmethod
